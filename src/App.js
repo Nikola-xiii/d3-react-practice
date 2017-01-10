@@ -1,21 +1,39 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { NICE, SUPER_NICE } from './colors';
 
-class App extends Component {
+class Counter extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { counter: 0 };
+    this.interval = setInterval(() => this.tick(), 1000);
+  }
+
+  tick() {
+    this.setState({
+      counter: this.state.counter + this.props.increment
+    });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
+      <h1 style={{ color: this.props.color }}>
+        Counter ({this.props.increment}): {this.state.counter}
+      </h1>
     );
   }
 }
 
-export default App;
+export class App extends Component {
+  render() {
+    return (
+      <div>
+        <Counter increment={1} color={NICE} />
+        <Counter increment={5} color={SUPER_NICE} />
+      </div>
+    );
+  }
+}
